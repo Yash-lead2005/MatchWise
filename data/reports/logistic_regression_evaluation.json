@@ -1,0 +1,91 @@
+{
+    "model": "Logistic Regression",
+    "algorithm": "Supervised binary classification",
+    "features": [
+        "name_char_similarity",
+        "name_token_similarity",
+        "name_jaccard_similarity",
+        "name_tfidf_similarity",
+        "description_similarity",
+        "description_jaccard_similarity",
+        "description_tfidf_similarity",
+        "manufacturer_exact_match",
+        "manufacturer_conflict",
+        "manufacturer_both_present",
+        "price_difference",
+        "price_relative_difference",
+        "price_both_present",
+        "name_length_difference",
+        "name_token_count_difference",
+        "name_missing_either",
+        "description_missing_either",
+        "manufacturer_missing_either",
+        "blocking_similarity"
+    ],
+    "feature_count": 19,
+    "configuration": {
+        "max_iter": 2000,
+        "class_weight": "balanced",
+        "random_state": 42,
+        "solver": "lbfgs"
+    },
+    "threshold_selection": {
+        "method": "Maximum validation F1",
+        "result": {
+            "threshold": 0.947609075254044,
+            "precision": 0.7543859649122807,
+            "recall": 0.7865853658536586,
+            "f1_score": 0.7701492536813651
+        }
+    },
+    "results": {
+        "train": {
+            "total_pairs": 15140,
+            "actual_duplicates": 768,
+            "predicted_duplicates": 652,
+            "accuracy": 0.9749009247027741,
+            "precision": 0.7975460122699386,
+            "recall": 0.6770833333333334,
+            "f1_score": 0.7323943661971831,
+            "average_precision": 0.8282903207898004,
+            "confusion_matrix": {
+                "true_negative": 14240,
+                "false_positive": 132,
+                "false_negative": 248,
+                "true_positive": 520
+            }
+        },
+        "validation": {
+            "total_pairs": 3240,
+            "actual_duplicates": 164,
+            "predicted_duplicates": 171,
+            "accuracy": 0.9762345679012345,
+            "precision": 0.7543859649122807,
+            "recall": 0.7865853658536586,
+            "f1_score": 0.7701492537313432,
+            "average_precision": 0.8411028010848334,
+            "confusion_matrix": {
+                "true_negative": 3034,
+                "false_positive": 42,
+                "false_negative": 35,
+                "true_positive": 129
+            }
+        },
+        "test": {
+            "total_pairs": 3240,
+            "actual_duplicates": 165,
+            "predicted_duplicates": 136,
+            "accuracy": 0.9774691358024692,
+            "precision": 0.8382352941176471,
+            "recall": 0.6909090909090909,
+            "f1_score": 0.7574750830564784,
+            "average_precision": 0.8616103893535783,
+            "confusion_matrix": {
+                "true_negative": 3053,
+                "false_positive": 22,
+                "false_negative": 51,
+                "true_positive": 114
+            }
+        }
+    }
+}
