@@ -1,0 +1,14 @@
+{
+    "model": "XGBoost",
+    "model_threshold": 0.8895065188407898,
+    "review_margin": 0.15,
+    "lower_boundary": 0.7395065188407898,
+    "upper_boundary": 1.0,
+    "total_records": 3240,
+    "auto_match_count": 0,
+    "human_review_count": 181,
+    "auto_non_match_count": 3059,
+    "auto_match_percentage": 0.0,
+    "human_review_percentage": 5.59,
+    "auto_non_match_percentage": 94.41
+}
