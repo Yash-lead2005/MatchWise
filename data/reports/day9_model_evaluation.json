@@ -1,0 +1,145 @@
+{
+    "day": 9,
+    "models": {
+        "Gaussian Naive Bayes": {
+            "model": "Gaussian Naive Bayes",
+            "threshold_selection": {
+                "threshold": 0.9989522896720051,
+                "precision": 0.6398104265402843,
+                "recall": 0.823170731707317,
+                "f1_score": 0.7199999999507855
+            },
+            "results": {
+                "train": {
+                    "total_pairs": 15140,
+                    "actual_duplicates": 768,
+                    "predicted_duplicates": 1350,
+                    "accuracy": 0.9416116248348745,
+                    "precision": 0.457037037037037,
+                    "recall": 0.8033854166666666,
+                    "f1_score": 0.5826251180358829,
+                    "average_precision": 0.6876831438975151,
+                    "confusion_matrix": {
+                        "true_negative": 13639,
+                        "false_positive": 733,
+                        "false_negative": 151,
+                        "true_positive": 617
+                    }
+                },
+                "validation": {
+                    "total_pairs": 3240,
+                    "actual_duplicates": 164,
+                    "predicted_duplicates": 211,
+                    "accuracy": 0.9675925925925926,
+                    "precision": 0.6398104265402843,
+                    "recall": 0.823170731707317,
+                    "f1_score": 0.72,
+                    "average_precision": 0.7642236552046101,
+                    "confusion_matrix": {
+                        "true_negative": 3000,
+                        "false_positive": 76,
+                        "false_negative": 29,
+                        "true_positive": 135
+                    }
+                },
+                "test": {
+                    "total_pairs": 3240,
+                    "actual_duplicates": 165,
+                    "predicted_duplicates": 181,
+                    "accuracy": 0.971604938271605,
+                    "precision": 0.7016574585635359,
+                    "recall": 0.7696969696969697,
+                    "f1_score": 0.7341040462427746,
+                    "average_precision": 0.7922856508154407,
+                    "confusion_matrix": {
+                        "true_negative": 3021,
+                        "false_positive": 54,
+                        "false_negative": 38,
+                        "true_positive": 127
+                    }
+                }
+            },
+            "model_file": "gaussian_nb.joblib",
+            "prediction_file": "gaussian_nb_test_predictions.csv"
+        },
+        "K-Nearest Neighbours": {
+            "model": "K-Nearest Neighbours",
+            "threshold_selection": {
+                "threshold": 0.2382488611595409,
+                "precision": 0.75,
+                "recall": 0.8780487804878049,
+                "f1_score": 0.8089887639952532
+            },
+            "results": {
+                "train": {
+                    "total_pairs": 15140,
+                    "actual_duplicates": 768,
+                    "predicted_duplicates": 794,
+                    "accuracy": 0.9982826948480845,
+                    "precision": 0.9672544080604534,
+                    "recall": 1.0,
+                    "f1_score": 0.9833546734955185,
+                    "average_precision": 0.9995778589291594,
+                    "confusion_matrix": {
+                        "true_negative": 14346,
+                        "false_positive": 26,
+                        "false_negative": 0,
+                        "true_positive": 768
+                    }
+                },
+                "validation": {
+                    "total_pairs": 3240,
+                    "actual_duplicates": 164,
+                    "predicted_duplicates": 192,
+                    "accuracy": 0.9790123456790123,
+                    "precision": 0.75,
+                    "recall": 0.8780487804878049,
+                    "f1_score": 0.8089887640449438,
+                    "average_precision": 0.8424663356075799,
+                    "confusion_matrix": {
+                        "true_negative": 3028,
+                        "false_positive": 48,
+                        "false_negative": 20,
+                        "true_positive": 144
+                    }
+                },
+                "test": {
+                    "total_pairs": 3240,
+                    "actual_duplicates": 165,
+                    "predicted_duplicates": 178,
+                    "accuracy": 0.9774691358024692,
+                    "precision": 0.7584269662921348,
+                    "recall": 0.8181818181818182,
+                    "f1_score": 0.7871720116618076,
+                    "average_precision": 0.8619206234086157,
+                    "confusion_matrix": {
+                        "true_negative": 3032,
+                        "false_positive": 43,
+                        "false_negative": 30,
+                        "true_positive": 135
+                    }
+                }
+            },
+            "model_file": "knn.joblib",
+            "prediction_file": "knn_test_predictions.csv"
+        }
+    },
+    "test_model_comparison": [
+        {
+            "model": "Gaussian Naive Bayes",
+            "accuracy": 0.971604938271605,
+            "precision": 0.7016574585635359,
+            "recall": 0.7696969696969697,
+            "f1_score": 0.7341040462427746,
+            "average_precision": 0.7922856508154407
+        },
+        {
+            "model": "K-Nearest Neighbours",
+            "accuracy": 0.9774691358024692,
+            "precision": 0.7584269662921348,
+            "recall": 0.8181818181818182,
+            "f1_score": 0.7871720116618076,
+            "average_precision": 0.8619206234086157
+        }
+    ]
+}
