@@ -1,0 +1,46 @@
+{
+    "abt": {
+        "file": "Abt.csv",
+        "rows": 1081,
+        "columns": [
+            "id",
+            "name",
+            "description",
+            "price"
+        ],
+        "missing_values": {
+            "id": 0,
+            "name": 0,
+            "description": 0,
+            "price": 663
+        },
+        "duplicate_rows": 0
+    },
+    "buy": {
+        "file": "Buy.csv",
+        "rows": 1092,
+        "columns": [
+            "id",
+            "name",
+            "description",
+            "manufacturer",
+            "price"
+        ],
+        "missing_values": {
+            "id": 0,
+            "name": 0,
+            "description": 441,
+            "manufacturer": 6,
+            "price": 502
+        },
+        "duplicate_rows": 0
+    },
+    "mapping": {
+        "file": "abt_buy_perfectMapping.csv",
+        "rows": 1097,
+        "columns": [
+            "idAbt",
+            "idBuy"
+        ]
+    }
+}
