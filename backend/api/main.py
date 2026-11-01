@@ -180,3 +180,105 @@ def startup_event():
     print("Threshold:", THRESHOLD)
     print("API is ready!")
     print("===================================\n")
+
+
+
+# --------------------------------------------------
+# DAY 16: RAW PRODUCT MATCHING ENDPOINT
+# --------------------------------------------------
+
+class ProductRecord(BaseModel):
+
+    name: str = Field(
+        ...,
+        min_length=1,
+        description="Product name"
+    )
+
+    description: str | None = None
+
+    manufacturer: str | None = None
+
+    price: str | float | None = None
+
+
+class MatchRequest(BaseModel):
+
+    product_a: ProductRecord
+
+    product_b: ProductRecord
+
+
+@app.post("/match")
+def match_products(request: MatchRequest):
+
+    from api.feature_builder import build_features
+
+    try:
+
+        # Convert Pydantic objects into dictionaries.
+        product_a = request.product_a.model_dump()
+        product_b = request.product_b.model_dump()
+
+        # Generate the exact 19 model features.
+        feature_df = build_features(
+            product_a,
+            product_b
+        )
+
+        # Generate XGBoost probability.
+        probability = float(
+            model.predict_proba(feature_df)[0][1]
+        )
+
+        # Apply the existing decision boundaries.
+        if probability >= UPPER_THRESHOLD:
+
+            decision = "AUTO_MATCH"
+
+        elif probability <= LOWER_THRESHOLD:
+
+            decision = "AUTO_NON_MATCH"
+
+        else:
+
+            decision = "HUMAN_REVIEW"
+
+        return {
+
+            "success": True,
+
+            "model": "XGBoost",
+
+            "match_probability": round(
+                probability, 4
+            ),
+
+            "threshold": round(
+                THRESHOLD, 4
+            ),
+
+            "decision": decision,
+
+            "features_generated": len(
+                feature_df.columns
+            ),
+
+            "message": "Raw product matching completed successfully."
+
+        }
+
+    except (ValueError, TypeError) as error:
+
+        raise HTTPException(
+            status_code=400,
+            detail=str(error)
+        )
+
+    except Exception as error:
+
+        raise HTTPException(
+            status_code=500,
+            detail=f"Matching failed: {str(error)}"
+        )
+
