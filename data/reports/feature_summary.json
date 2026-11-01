@@ -1,0 +1,83 @@
+{
+    "train": {
+        "rows": 15140,
+        "feature_count": 19,
+        "positive_pairs": 768,
+        "negative_pairs": 14372,
+        "feature_columns": [
+            "name_char_similarity",
+            "name_token_similarity",
+            "name_jaccard_similarity",
+            "name_tfidf_similarity",
+            "description_similarity",
+            "description_jaccard_similarity",
+            "description_tfidf_similarity",
+            "manufacturer_exact_match",
+            "manufacturer_conflict",
+            "manufacturer_both_present",
+            "price_difference",
+            "price_relative_difference",
+            "price_both_present",
+            "name_length_difference",
+            "name_token_count_difference",
+            "name_missing_either",
+            "description_missing_either",
+            "manufacturer_missing_either",
+            "blocking_similarity"
+        ]
+    },
+    "validation": {
+        "rows": 3240,
+        "feature_count": 19,
+        "positive_pairs": 164,
+        "negative_pairs": 3076,
+        "feature_columns": [
+            "name_char_similarity",
+            "name_token_similarity",
+            "name_jaccard_similarity",
+            "name_tfidf_similarity",
+            "description_similarity",
+            "description_jaccard_similarity",
+            "description_tfidf_similarity",
+            "manufacturer_exact_match",
+            "manufacturer_conflict",
+            "manufacturer_both_present",
+            "price_difference",
+            "price_relative_difference",
+            "price_both_present",
+            "name_length_difference",
+            "name_token_count_difference",
+            "name_missing_either",
+            "description_missing_either",
+            "manufacturer_missing_either",
+            "blocking_similarity"
+        ]
+    },
+    "test": {
+        "rows": 3240,
+        "feature_count": 19,
+        "positive_pairs": 165,
+        "negative_pairs": 3075,
+        "feature_columns": [
+            "name_char_similarity",
+            "name_token_similarity",
+            "name_jaccard_similarity",
+            "name_tfidf_similarity",
+            "description_similarity",
+            "description_jaccard_similarity",
+            "description_tfidf_similarity",
+            "manufacturer_exact_match",
+            "manufacturer_conflict",
+            "manufacturer_both_present",
+            "price_difference",
+            "price_relative_difference",
+            "price_both_present",
+            "name_length_difference",
+            "name_token_count_difference",
+            "name_missing_either",
+            "description_missing_either",
+            "manufacturer_missing_either",
+            "blocking_similarity"
+        ]
+    }
+}
