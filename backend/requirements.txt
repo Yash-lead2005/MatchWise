@@ -8,3 +8,5 @@ scikit-learn
 joblib
 rapidfuzz
 python-multipart
+matplotlib
+seaborn
