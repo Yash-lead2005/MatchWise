@@ -1,0 +1,32 @@
+{
+    "model_name": "XGBoost Classifier",
+    "label_column": "label",
+    "id_columns": [
+        "abt_id",
+        "buy_id"
+    ],
+    "feature_columns": [
+        "name_char_similarity",
+        "name_token_similarity",
+        "name_jaccard_similarity",
+        "name_tfidf_similarity",
+        "description_similarity",
+        "description_jaccard_similarity",
+        "description_tfidf_similarity",
+        "manufacturer_exact_match",
+        "manufacturer_conflict",
+        "manufacturer_both_present",
+        "price_difference",
+        "price_relative_difference",
+        "price_both_present",
+        "name_length_difference",
+        "name_token_count_difference",
+        "name_missing_either",
+        "description_missing_either",
+        "manufacturer_missing_either",
+        "blocking_similarity"
+    ],
+    "threshold": 0.8895065188407898,
+    "scale_pos_weight": 18.713541666666668,
+    "random_state": 42
+}
