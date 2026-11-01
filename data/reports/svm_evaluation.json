@@ -1,0 +1,86 @@
+{
+    "model": "Linear Support Vector Machine",
+    "algorithm": "LinearSVC",
+    "feature_count": 19,
+    "features": [
+        "name_char_similarity",
+        "name_token_similarity",
+        "name_jaccard_similarity",
+        "name_tfidf_similarity",
+        "description_similarity",
+        "description_jaccard_similarity",
+        "description_tfidf_similarity",
+        "manufacturer_exact_match",
+        "manufacturer_conflict",
+        "manufacturer_both_present",
+        "price_difference",
+        "price_relative_difference",
+        "price_both_present",
+        "name_length_difference",
+        "name_token_count_difference",
+        "name_missing_either",
+        "description_missing_either",
+        "manufacturer_missing_either",
+        "blocking_similarity"
+    ],
+    "threshold_selection": {
+        "method": "Maximum validation F1",
+        "result": {
+            "threshold": 0.8734073783435624,
+            "precision": 0.75,
+            "recall": 0.7865853658536586,
+            "f1_score": 0.7678571428071712
+        }
+    },
+    "results": {
+        "train": {
+            "total_pairs": 15140,
+            "actual_duplicates": 768,
+            "predicted_duplicates": 655,
+            "accuracy": 0.9752311756935271,
+            "precision": 0.8,
+            "recall": 0.6822916666666666,
+            "f1_score": 0.7364722417427969,
+            "average_precision": 0.8288551596589511,
+            "confusion_matrix": {
+                "true_negative": 14241,
+                "false_positive": 131,
+                "false_negative": 244,
+                "true_positive": 524
+            }
+        },
+        "validation": {
+            "total_pairs": 3240,
+            "actual_duplicates": 164,
+            "predicted_duplicates": 172,
+            "accuracy": 0.975925925925926,
+            "precision": 0.75,
+            "recall": 0.7865853658536586,
+            "f1_score": 0.7678571428571429,
+            "average_precision": 0.8403031708094404,
+            "confusion_matrix": {
+                "true_negative": 3033,
+                "false_positive": 43,
+                "false_negative": 35,
+                "true_positive": 129
+            }
+        },
+        "test": {
+            "total_pairs": 3240,
+            "actual_duplicates": 165,
+            "predicted_duplicates": 134,
+            "accuracy": 0.9774691358024692,
+            "precision": 0.8432835820895522,
+            "recall": 0.6848484848484848,
+            "f1_score": 0.7558528428093646,
+            "average_precision": 0.8611435396479525,
+            "confusion_matrix": {
+                "true_negative": 3054,
+                "false_positive": 21,
+                "false_negative": 52,
+                "true_positive": 113
+            }
+        }
+    },
+    "interpretation": "Decision scores are not calibrated probabilities."
+}
