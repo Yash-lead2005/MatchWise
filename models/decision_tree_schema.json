@@ -1,0 +1,40 @@
+{
+    "model_name": "Decision Tree",
+    "feature_columns": [
+        "name_char_similarity",
+        "name_token_similarity",
+        "name_jaccard_similarity",
+        "name_tfidf_similarity",
+        "description_similarity",
+        "description_jaccard_similarity",
+        "description_tfidf_similarity",
+        "manufacturer_exact_match",
+        "manufacturer_conflict",
+        "manufacturer_both_present",
+        "price_difference",
+        "price_relative_difference",
+        "price_both_present",
+        "name_length_difference",
+        "name_token_count_difference",
+        "name_missing_either",
+        "description_missing_either",
+        "manufacturer_missing_either",
+        "blocking_similarity"
+    ],
+    "threshold": 0.9257923215666066,
+    "configuration": {
+        "ccp_alpha": 0.0,
+        "class_weight": "balanced",
+        "criterion": "gini",
+        "max_depth": 12,
+        "max_features": null,
+        "max_leaf_nodes": null,
+        "min_impurity_decrease": 0.0,
+        "min_samples_leaf": 5,
+        "min_samples_split": 10,
+        "min_weight_fraction_leaf": 0.0,
+        "monotonic_cst": null,
+        "random_state": 42,
+        "splitter": "best"
+    }
+}
