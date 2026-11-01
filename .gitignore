@@ -1,0 +1,30 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Node
+node_modules/
+dist/
+
+# Environment
+.env
+.env.*
+
+# Allow example configuration
+!.env.example
+
+# Generated data and models
+backend/matchwise.db
+models/*.joblib
+data/raw/
+data/processed/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
