@@ -1,0 +1,47 @@
+{
+    "method": "Character TF-IDF + Cosine Nearest Neighbours",
+    "top_k": 20,
+    "vectorizer": {
+        "analyzer": "char_wb",
+        "ngram_range": [
+            2,
+            5
+        ],
+        "sublinear_tf": true
+    },
+    "splits": {
+        "train": {
+            "abt_records": 757,
+            "buy_records": 763,
+            "total_possible_pairs": 577591,
+            "candidate_pairs": 15140,
+            "known_matches": 768,
+            "matches_found_by_blocking": 768,
+            "matches_missed_by_blocking": 0,
+            "blocking_recall": 1.0,
+            "candidate_reduction_ratio": 0.9737876802096985
+        },
+        "validation": {
+            "abt_records": 162,
+            "buy_records": 164,
+            "total_possible_pairs": 26568,
+            "candidate_pairs": 3240,
+            "known_matches": 164,
+            "matches_found_by_blocking": 164,
+            "matches_missed_by_blocking": 0,
+            "blocking_recall": 1.0,
+            "candidate_reduction_ratio": 0.8780487804878049
+        },
+        "test": {
+            "abt_records": 162,
+            "buy_records": 165,
+            "total_possible_pairs": 26730,
+            "candidate_pairs": 3240,
+            "known_matches": 165,
+            "matches_found_by_blocking": 165,
+            "matches_missed_by_blocking": 0,
+            "blocking_recall": 1.0,
+            "candidate_reduction_ratio": 0.8787878787878788
+        }
+    }
+}

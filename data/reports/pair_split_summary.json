@@ -1,0 +1,40 @@
+{
+    "random_state": 42,
+    "split_ratios": {
+        "train": 0.7,
+        "validation": 0.15,
+        "test": 0.15
+    },
+    "split_summary": {
+        "train": {
+            "components": 752,
+            "abt_records": 757,
+            "buy_records": 763,
+            "positive_pairs": 768,
+            "negative_pairs": 2304,
+            "total_pairs": 3072
+        },
+        "validation": {
+            "components": 162,
+            "abt_records": 162,
+            "buy_records": 164,
+            "positive_pairs": 164,
+            "negative_pairs": 492,
+            "total_pairs": 656
+        },
+        "test": {
+            "components": 162,
+            "abt_records": 162,
+            "buy_records": 165,
+            "positive_pairs": 165,
+            "negative_pairs": 26565,
+            "total_pairs": 26730
+        }
+    },
+    "record_level_leakage_check": "PASSED",
+    "negative_sampling": {
+        "train": "Up to 3 negatives per positive",
+        "validation": "Up to 3 negatives per positive",
+        "test": "All within-split non-match pairs"
+    }
+}
