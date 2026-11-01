@@ -1,0 +1,15 @@
+{
+    "models_found": [
+        "Day11 Model Evaluation",
+        "Day9 Model Evaluation",
+        "Gaussian Naive Bayes",
+        "Linear SVM",
+        "Logistic Regression Evaluation",
+        "Rule-Based Baseline",
+        "XGBoost"
+    ],
+    "validation_comparison_available": true,
+    "missing_report_files": [],
+    "total_metric_sections": 104,
+    "selection_rule": "Use validation F1 and Average Precision for model selection. Do not select models using test performance."
+}

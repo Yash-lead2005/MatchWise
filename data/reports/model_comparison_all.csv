@@ -1,0 +1,105 @@
+model,split,source_report,report_section,precision,recall,f1_score,accuracy,average_precision
+Rule-Based Baseline,validation,baseline_evaluation.json,root.threshold_selection.validation_result,0.6205128205128205,0.7378048780487805,0.6740947075208914,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.results.train,0.4470877768662838,0.7096354166666666,0.548565676899849,0.9407529722589167,0.6341844799379014
+Rule-Based Baseline,validation,baseline_evaluation.json,root.results.validation,0.6205128205128205,0.7378048780487805,0.6740947075208914,0.9638888888888889,0.7437296918806924
+Rule-Based Baseline,test,baseline_evaluation.json,root.results.test,0.6845238095238095,0.696969696969697,0.6906906906906907,0.9682098765432099,0.7642953008794146
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[0],0.25038880248833595,0.9817073170731707,0.3990086741016109,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[1],0.27943760984182775,0.9695121951219512,0.43383356070941337,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[2],0.3172690763052209,0.9634146341463414,0.4773413897280967,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[3],0.34811529933481156,0.9573170731707317,0.510569105691057,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[4],0.3857493857493858,0.9573170731707317,0.5499124343257443,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[5],0.40848806366047746,0.9390243902439024,0.5693160813308688,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[6],0.4319526627218935,0.8902439024390244,0.5816733067729084,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[7],0.46153846153846156,0.8780487804878049,0.6050420168067226,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[8],0.4797297297297297,0.8658536585365854,0.6173913043478261,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[9],0.5166051660516605,0.8536585365853658,0.6436781609195402,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[10],0.53125,0.8292682926829268,0.6476190476190476,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[11],0.5413223140495868,0.7987804878048781,0.645320197044335,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[12],0.5614035087719298,0.7804878048780488,0.6530612244897959,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[13],0.589622641509434,0.7621951219512195,0.6648936170212766,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[14],0.6205128205128205,0.7378048780487805,0.6740947075208914,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[15],0.6290322580645161,0.7134146341463414,0.6685714285714286,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[16],0.6384180790960452,0.6890243902439024,0.6627565982404692,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[17],0.6666666666666666,0.6707317073170732,0.668693009118541,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[18],0.6891891891891891,0.6219512195121951,0.6538461538461539,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[19],0.7092198581560284,0.6097560975609756,0.6557377049180327,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[20],0.7559055118110236,0.5853658536585366,0.6597938144329897,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[21],0.7982456140350878,0.5548780487804879,0.6546762589928058,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[22],0.8076923076923077,0.5121951219512195,0.6268656716417911,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[23],0.84375,0.49390243902439024,0.6230769230769231,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[24],0.8522727272727273,0.4573170731707317,0.5952380952380952,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[25],0.8450704225352113,0.36585365853658536,0.5106382978723404,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[26],0.8615384615384616,0.34146341463414637,0.4890829694323144,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[27],0.8461538461538461,0.2682926829268293,0.4074074074074074,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[28],0.8888888888888888,0.24390243902439024,0.3827751196172249,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[29],0.9459459459459459,0.21341463414634146,0.3482587064676617,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[30],0.96875,0.18902439024390244,0.3163265306122449,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[31],0.9655172413793104,0.17073170731707318,0.29015544041450775,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[32],0.9565217391304348,0.13414634146341464,0.23529411764705882,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[33],0.9545454545454546,0.12804878048780488,0.22580645161290322,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[34],0.9473684210526315,0.10975609756097561,0.19672131147540983,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[35],0.9166666666666666,0.06707317073170732,0.125,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[36],0.9166666666666666,0.06707317073170732,0.125,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[37],1.0,0.06707317073170732,0.12571428571428572,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[38],1.0,0.054878048780487805,0.10404624277456648,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[39],1.0,0.036585365853658534,0.07058823529411765,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[40],1.0,0.036585365853658534,0.07058823529411765,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[41],1.0,0.036585365853658534,0.07058823529411765,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[42],1.0,0.036585365853658534,0.07058823529411765,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[43],1.0,0.024390243902439025,0.047619047619047616,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[44],1.0,0.012195121951219513,0.024096385542168676,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[45],1.0,0.012195121951219513,0.024096385542168676,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[46],1.0,0.006097560975609756,0.012121212121212121,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[47],1.0,0.006097560975609756,0.012121212121212121,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[48],0.0,0.0,0.0,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[49],0.0,0.0,0.0,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[50],0.0,0.0,0.0,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[51],0.0,0.0,0.0,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[52],0.0,0.0,0.0,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[53],0.0,0.0,0.0,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[54],0.0,0.0,0.0,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[55],0.0,0.0,0.0,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[56],0.0,0.0,0.0,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[57],0.0,0.0,0.0,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[58],0.0,0.0,0.0,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[59],0.0,0.0,0.0,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[60],0.0,0.0,0.0,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[61],0.0,0.0,0.0,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[62],0.0,0.0,0.0,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[63],0.0,0.0,0.0,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[64],0.0,0.0,0.0,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[65],0.0,0.0,0.0,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[66],0.0,0.0,0.0,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[67],0.0,0.0,0.0,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[68],0.0,0.0,0.0,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[69],0.0,0.0,0.0,,
+Rule-Based Baseline,unspecified,baseline_evaluation.json,root.threshold_search[70],0.0,0.0,0.0,,
+Logistic Regression Evaluation,unspecified,logistic_regression_evaluation.json,root.threshold_selection.result,0.7543859649122807,0.7865853658536586,0.7701492536813651,,
+Logistic Regression Evaluation,unspecified,logistic_regression_evaluation.json,root.results.train,0.7975460122699386,0.6770833333333334,0.7323943661971831,0.9749009247027741,0.8282903207898004
+Logistic Regression Evaluation,validation,logistic_regression_evaluation.json,root.results.validation,0.7543859649122807,0.7865853658536586,0.7701492537313432,0.9762345679012345,0.8411028010848334
+Logistic Regression Evaluation,test,logistic_regression_evaluation.json,root.results.test,0.8382352941176471,0.6909090909090909,0.7574750830564784,0.9774691358024692,0.8616103893535783
+Gaussian Naive Bayes,unspecified,day9_model_evaluation.json,root.models.Gaussian Naive Bayes.threshold_selection,0.6398104265402843,0.823170731707317,0.7199999999507855,,
+Gaussian Naive Bayes,unspecified,day9_model_evaluation.json,root.models.Gaussian Naive Bayes.results.train,0.457037037037037,0.8033854166666666,0.5826251180358829,0.9416116248348745,0.6876831438975151
+Gaussian Naive Bayes,validation,day9_model_evaluation.json,root.models.Gaussian Naive Bayes.results.validation,0.6398104265402843,0.823170731707317,0.72,0.9675925925925926,0.7642236552046101
+Gaussian Naive Bayes,test,day9_model_evaluation.json,root.models.Gaussian Naive Bayes.results.test,0.7016574585635359,0.7696969696969697,0.7341040462427746,0.971604938271605,0.7922856508154407
+Day9 Model Evaluation,unspecified,day9_model_evaluation.json,root.models.K-Nearest Neighbours.threshold_selection,0.75,0.8780487804878049,0.8089887639952532,,
+Day9 Model Evaluation,unspecified,day9_model_evaluation.json,root.models.K-Nearest Neighbours.results.train,0.9672544080604534,1.0,0.9833546734955185,0.9982826948480845,0.9995778589291594
+Day9 Model Evaluation,validation,day9_model_evaluation.json,root.models.K-Nearest Neighbours.results.validation,0.75,0.8780487804878049,0.8089887640449438,0.9790123456790123,0.8424663356075799
+Day9 Model Evaluation,test,day9_model_evaluation.json,root.models.K-Nearest Neighbours.results.test,0.7584269662921348,0.8181818181818182,0.7871720116618076,0.9774691358024692,0.8619206234086157
+Day9 Model Evaluation,test,day9_model_evaluation.json,root.test_model_comparison[0],0.7016574585635359,0.7696969696969697,0.7341040462427746,0.971604938271605,0.7922856508154407
+Day9 Model Evaluation,test,day9_model_evaluation.json,root.test_model_comparison[1],0.7584269662921348,0.8181818181818182,0.7871720116618076,0.9774691358024692,0.8619206234086157
+Linear SVM,unspecified,svm_evaluation.json,root.threshold_selection.result,0.75,0.7865853658536586,0.7678571428071712,,
+Linear SVM,unspecified,svm_evaluation.json,root.results.train,0.8,0.6822916666666666,0.7364722417427969,0.9752311756935271,0.8288551596589511
+Linear SVM,validation,svm_evaluation.json,root.results.validation,0.75,0.7865853658536586,0.7678571428571429,0.975925925925926,0.8403031708094404
+Linear SVM,test,svm_evaluation.json,root.results.test,0.8432835820895522,0.6848484848484848,0.7558528428093646,0.9774691358024692,0.8611435396479525
+Day11 Model Evaluation,unspecified,day11_model_evaluation.json,root.models.Decision Tree.threshold_selection,0.6852791878172588,0.823170731707317,0.7479224376235479,,
+Day11 Model Evaluation,unspecified,day11_model_evaluation.json,root.models.Decision Tree.results.train,0.8310038119440915,0.8515625,0.8411575562700965,0.9836856010568031,0.9355978989391296
+Day11 Model Evaluation,validation,day11_model_evaluation.json,root.models.Decision Tree.results.validation,0.6852791878172588,0.823170731707317,0.7479224376731302,0.9719135802469135,0.6740581273685318
+Day11 Model Evaluation,test,day11_model_evaluation.json,root.models.Decision Tree.results.test,0.7409638554216867,0.7454545454545455,0.743202416918429,0.9737654320987654,0.6615783663508222
+Day11 Model Evaluation,unspecified,day11_model_evaluation.json,root.models.Random Forest.threshold_selection,0.7407407407407407,0.8536585365853658,0.7932011330947266,,
+Day11 Model Evaluation,unspecified,day11_model_evaluation.json,root.models.Random Forest.results.train,0.8194444444444444,0.9986979166666666,0.9002347417840375,0.9887714663143989,0.9841810738029503
+Day11 Model Evaluation,validation,day11_model_evaluation.json,root.models.Random Forest.results.validation,0.7407407407407407,0.8536585365853658,0.7932011331444759,0.9774691358024692,0.8614522550964809
+Day11 Model Evaluation,test,day11_model_evaluation.json,root.models.Random Forest.results.test,0.7831325301204819,0.7878787878787878,0.7854984894259819,0.9780864197530864,0.859849141827981
+Day11 Model Evaluation,test,day11_model_evaluation.json,root.test_model_comparison[0],0.7409638554216867,0.7454545454545455,0.743202416918429,0.9737654320987654,0.6615783663508222
+Day11 Model Evaluation,test,day11_model_evaluation.json,root.test_model_comparison[1],0.7831325301204819,0.7878787878787878,0.7854984894259819,0.9780864197530864,0.859849141827981
+XGBoost,test,xgboost_evaluation.json,root.test_metrics,0.831081081081081,0.7454545454545455,0.7859424920127795,0.979320987654321,0.8803753609274897
