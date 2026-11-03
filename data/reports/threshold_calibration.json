@@ -1,0 +1,26 @@
+{
+    "dataset": "validation",
+    "validation_records": 3240,
+    "target_auto_match_precision": 0.95,
+    "target_auto_non_match_accuracy": 0.99,
+    "recommended_auto_match": {
+        "threshold": 0.9971266388893127,
+        "precision": 0.9565217391304348,
+        "recall": 0.2682926829268293,
+        "predicted_matches": 46
+    },
+    "recommended_auto_non_match": {
+        "threshold": 0.9004557728767395,
+        "accuracy": 0.9902311950504722,
+        "predicted_non_matches": 3071
+    },
+    "proposed_policy": {
+        "auto_match_threshold": 0.9971266388893127,
+        "auto_non_match_threshold": 0.9004557728767395,
+        "auto_match_count": 46,
+        "auto_non_match_count": 3071,
+        "human_review_count": 123,
+        "human_review_rate": 0.03796296296296296,
+        "automatic_coverage": 0.962037037037037
+    }
+}

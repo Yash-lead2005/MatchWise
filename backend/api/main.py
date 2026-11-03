@@ -5,9 +5,14 @@ from pathlib import Path
 import joblib
 import pandas as pd
 
+from typing import Literal
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
+from api.database import (
+    save_matching_record,
+    get_connection
+)
 
 
 # --------------------------------------------------
@@ -43,10 +48,17 @@ THRESHOLD = float(schema["threshold"])
 # 3. CALIBRATED DECISION THRESHOLDS
 # Obtained from validation dataset
 # --------------------------------------------------
+# Calibrated thresholds for the new 15-feature XGBoost model
 
-AUTO_MATCH_THRESHOLD = 0.9975168704986572
+AUTO_MATCH_THRESHOLD = 0.9971
+AUTO_NON_MATCH_THRESHOLD = 0.9005
 
-AUTO_NON_MATCH_THRESHOLD = 0.91334404493331909
+UPPER_THRESHOLD = AUTO_MATCH_THRESHOLD
+LOWER_THRESHOLD = AUTO_NON_MATCH_THRESHOLD
+
+REVIEW_MARGIN = (
+    AUTO_MATCH_THRESHOLD - AUTO_NON_MATCH_THRESHOLD
+) / 2
 
 
 # --------------------------------------------------
@@ -131,7 +143,13 @@ class MatchRequest(BaseModel):
     product_a: ProductRecord
 
     product_b: ProductRecord
+    
+class ReviewDecisionRequest(BaseModel):
 
+    decision: Literal["MATCH", "NON_MATCH"] = Field(
+        ...,
+        description="Human review decision"
+    )
 
 # --------------------------------------------------
 # 8. HOME ENDPOINT
@@ -311,6 +329,7 @@ def startup_event():
 # Day 16 + Day 17 improvements
 # --------------------------------------------------
 
+
 @app.post("/match")
 def match_products(request: MatchRequest):
 
@@ -320,7 +339,6 @@ def match_products(request: MatchRequest):
 
         # Convert Pydantic objects into dictionaries.
         product_a = request.product_a.model_dump()
-
         product_b = request.product_b.model_dump()
 
         # Generate the exact 19 model features.
@@ -335,11 +353,34 @@ def match_products(request: MatchRequest):
         )
 
         # Apply calibrated three-level decision policy.
-        decision = get_match_decision(probability)
+        if probability >= UPPER_THRESHOLD:
 
+            decision = "AUTO_MATCH"
+
+        elif probability <= LOWER_THRESHOLD:
+
+            decision = "AUTO_NON_MATCH"
+
+        else:
+
+            decision = "HUMAN_REVIEW"
+
+        # Save comparison and prediction in SQLite.
+        record_id = save_matching_record(
+            product_a=product_a,
+            product_b=product_b,
+            probability=probability,
+            model_decision=decision,
+            auto_match_threshold=UPPER_THRESHOLD,
+            auto_non_match_threshold=LOWER_THRESHOLD
+        )
+
+        # Return prediction and database record ID.
         return {
 
             "success": True,
+
+            "record_id": record_id,
 
             "model": "XGBoost",
 
@@ -348,20 +389,26 @@ def match_products(request: MatchRequest):
             ),
 
             "auto_match_threshold": round(
-                AUTO_MATCH_THRESHOLD, 4
+                UPPER_THRESHOLD, 4
             ),
 
             "auto_non_match_threshold": round(
-                AUTO_NON_MATCH_THRESHOLD, 4
+                LOWER_THRESHOLD, 4
             ),
 
             "decision": decision,
+
+            "review_status": (
+                "PENDING"
+                if decision == "HUMAN_REVIEW"
+                else "NOT_REQUIRED"
+            ),
 
             "features_generated": len(
                 feature_df.columns
             ),
 
-            "message": "Raw product matching completed successfully."
+            "message": "Product matching completed and saved successfully."
 
         }
 
@@ -377,4 +424,415 @@ def match_products(request: MatchRequest):
         raise HTTPException(
             status_code=500,
             detail=f"Matching failed: {str(error)}"
+        )
+
+
+
+# --------------------------------------------------
+# DAY 20 - STEP 3: PENDING HUMAN REVIEW API
+# --------------------------------------------------
+
+@app.get("/reviews/pending")
+def get_pending_reviews():
+
+    try:
+
+        with get_connection() as connection:
+
+            rows = connection.execute("""
+
+                SELECT
+                    id,
+                    product_a,
+                    product_b,
+                    match_probability,
+                    model_decision,
+                    review_status,
+                    auto_match_threshold,
+                    auto_non_match_threshold,
+                    created_at
+
+                FROM matching_records
+
+                WHERE review_status = 'PENDING'
+
+                ORDER BY created_at DESC
+
+            """).fetchall()
+
+        reviews = []
+
+        for row in rows:
+
+            reviews.append({
+
+                "id": row["id"],
+
+                "product_a": json.loads(
+                    row["product_a"]
+                ),
+
+                "product_b": json.loads(
+                    row["product_b"]
+                ),
+
+                "match_probability": round(
+                    row["match_probability"], 4
+                ),
+
+                "model_decision": row["model_decision"],
+
+                "review_status": row["review_status"],
+
+                "auto_match_threshold": row[
+                    "auto_match_threshold"
+                ],
+
+                "auto_non_match_threshold": row[
+                    "auto_non_match_threshold"
+                ],
+
+                "created_at": row["created_at"]
+
+            })
+
+        return {
+
+            "success": True,
+
+            "total_pending": len(reviews),
+
+            "reviews": reviews
+
+        }
+
+    except Exception as error:
+
+        raise HTTPException(
+            status_code=500,
+            detail=f"Unable to retrieve pending reviews: {str(error)}"
+        )
+        
+        
+
+# --------------------------------------------------
+# DAY 20 - STEP 4: HUMAN APPROVE / REJECT API
+# --------------------------------------------------
+
+@app.post("/reviews/{record_id}/decision")
+def submit_review_decision(
+    record_id: int,
+    request: ReviewDecisionRequest
+):
+
+    try:
+
+        with get_connection() as connection:
+
+            # Check whether the record exists and is pending.
+            row = connection.execute("""
+
+                SELECT id, review_status, model_decision
+                FROM matching_records
+                WHERE id = ?
+
+            """, (record_id,)).fetchone()
+
+            if row is None:
+
+                raise HTTPException(
+                    status_code=404,
+                    detail="Matching record not found."
+                )
+
+            if row["review_status"] != "PENDING":
+
+                raise HTTPException(
+                    status_code=409,
+                    detail="This record has already been reviewed or does not require review."
+                )
+
+            # Save the human decision separately.
+            connection.execute("""
+
+                UPDATE matching_records
+
+                SET
+                    human_decision = ?,
+                    review_status = 'REVIEWED',
+                    reviewed_at = STRFTIME(
+                        '%Y-%m-%dT%H:%M:%fZ',
+                        'NOW'
+                    )
+
+                WHERE id = ?
+                AND review_status = 'PENDING'
+
+            """, (
+                request.decision,
+                record_id
+            ))
+
+        return {
+
+            "success": True,
+
+            "record_id": record_id,
+
+            "model_decision": row["model_decision"],
+
+            "human_decision": request.decision,
+
+            "review_status": "REVIEWED",
+
+            "message": "Human review decision saved successfully."
+
+        }
+
+    except HTTPException:
+        raise
+
+    except Exception as error:
+
+        raise HTTPException(
+            status_code=500,
+            detail=f"Unable to save review decision: {str(error)}"
+        )
+
+
+
+# --------------------------------------------------
+# DAY 20 - STEP 5: MATCHING HISTORY API
+# --------------------------------------------------
+
+@app.get("/history")
+def get_matching_history(
+    limit: int = 50,
+    offset: int = 0
+):
+
+    if limit < 1 or limit > 100:
+        raise HTTPException(
+            status_code=400,
+            detail="Limit must be between 1 and 100."
+        )
+
+    if offset < 0:
+        raise HTTPException(
+            status_code=400,
+            detail="Offset cannot be negative."
+        )
+
+    try:
+
+        with get_connection() as connection:
+
+            # Total number of saved comparisons.
+            total_records = connection.execute("""
+
+                SELECT COUNT(*)
+                FROM matching_records
+
+            """).fetchone()[0]
+
+            # Retrieve matching history.
+            rows = connection.execute("""
+
+                SELECT
+                    id,
+                    product_a,
+                    product_b,
+                    match_probability,
+                    model_decision,
+                    human_decision,
+                    review_status,
+                    auto_match_threshold,
+                    auto_non_match_threshold,
+                    created_at,
+                    reviewed_at
+
+                FROM matching_records
+
+                ORDER BY id DESC
+
+                LIMIT ? OFFSET ?
+
+            """, (limit, offset)).fetchall()
+
+        history = []
+
+        for row in rows:
+
+            # Human decision takes priority when available.
+            final_decision = (
+                row["human_decision"]
+                if row["human_decision"] is not None
+                else row["model_decision"]
+            )
+
+            history.append({
+
+                "id": row["id"],
+
+                "product_a": json.loads(
+                    row["product_a"]
+                ),
+
+                "product_b": json.loads(
+                    row["product_b"]
+                ),
+
+                "match_probability": round(
+                    row["match_probability"], 4
+                ),
+
+                "model_decision": row["model_decision"],
+
+                "human_decision": row["human_decision"],
+
+                "final_decision": final_decision,
+
+                "review_status": row["review_status"],
+
+                "auto_match_threshold": row[
+                    "auto_match_threshold"
+                ],
+
+                "auto_non_match_threshold": row[
+                    "auto_non_match_threshold"
+                ],
+
+                "created_at": row["created_at"],
+
+                "reviewed_at": row["reviewed_at"]
+
+            })
+
+        return {
+
+            "success": True,
+
+            "total_records": total_records,
+
+            "returned_records": len(history),
+
+            "limit": limit,
+
+            "offset": offset,
+
+            "history": history
+
+        }
+
+    except Exception as error:
+
+        raise HTTPException(
+            status_code=500,
+            detail=f"Unable to retrieve matching history: {str(error)}"
+        )
+
+
+# --------------------------------------------------
+# DAY 20 - STEP 6: ANALYTICS API
+# --------------------------------------------------
+
+@app.get("/analytics")
+def get_matching_analytics():
+
+    try:
+
+        with get_connection() as connection:
+
+            stats = connection.execute("""
+
+                SELECT
+
+                    COUNT(*) AS total_comparisons,
+
+                    SUM(
+                        CASE
+                            WHEN model_decision = 'AUTO_MATCH'
+                            THEN 1 ELSE 0
+                        END
+                    ) AS auto_matches,
+
+                    SUM(
+                        CASE
+                            WHEN model_decision = 'AUTO_NON_MATCH'
+                            THEN 1 ELSE 0
+                        END
+                    ) AS auto_non_matches,
+
+                    SUM(
+                        CASE
+                            WHEN review_status = 'PENDING'
+                            THEN 1 ELSE 0
+                        END
+                    ) AS pending_reviews,
+
+                    SUM(
+                        CASE
+                            WHEN review_status = 'REVIEWED'
+                            THEN 1 ELSE 0
+                        END
+                    ) AS completed_reviews,
+
+                    SUM(
+                        CASE
+                            WHEN human_decision = 'MATCH'
+                            THEN 1 ELSE 0
+                        END
+                    ) AS human_confirmed_matches,
+
+                    SUM(
+                        CASE
+                            WHEN human_decision = 'NON_MATCH'
+                            THEN 1 ELSE 0
+                        END
+                    ) AS human_confirmed_non_matches,
+
+                    AVG(match_probability)
+                    AS average_match_probability
+
+                FROM matching_records
+
+            """).fetchone()
+
+        return {
+
+            "success": True,
+
+            "total_comparisons":
+                stats["total_comparisons"] or 0,
+
+            "auto_matches":
+                stats["auto_matches"] or 0,
+
+            "auto_non_matches":
+                stats["auto_non_matches"] or 0,
+
+            "pending_reviews":
+                stats["pending_reviews"] or 0,
+
+            "completed_reviews":
+                stats["completed_reviews"] or 0,
+
+            "human_confirmed_matches":
+                stats["human_confirmed_matches"] or 0,
+
+            "human_confirmed_non_matches":
+                stats["human_confirmed_non_matches"] or 0,
+
+            "average_match_probability": round(
+                stats["average_match_probability"] or 0,
+                4
+            )
+
+        }
+
+    except Exception as error:
+
+        raise HTTPException(
+            status_code=500,
+            detail=f"Unable to retrieve analytics: {str(error)}"
         )

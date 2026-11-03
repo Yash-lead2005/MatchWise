@@ -1,6 +1,7 @@
 
 from pathlib import Path
 import json
+import joblib
 
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -263,6 +264,13 @@ def main():
     )
 
     vectorizer.fit(training_text)
+    # Save blocking vectorizer for API inference.
+    joblib.dump(
+    vectorizer,
+    PROJECT_ROOT / "models" / "blocking_vectorizer.joblib"
+    )
+
+    print("Blocking vectorizer saved successfully.")
 
     print("\nTF-IDF vocabulary size:", len(vectorizer.vocabulary_))
     print("Candidate neighbours per Abt record:", TOP_K)

@@ -1,5 +1,6 @@
 
 import html
+import json
 import re
 import unicodedata
 from pathlib import Path
@@ -18,22 +19,21 @@ from rapidfuzz import fuzz
 BASE_DIR = Path(__file__).resolve().parents[2]
 
 VECTORIZER_PATH = BASE_DIR / "models" / "text_vectorizers.joblib"
+BLOCKING_VECTORIZER_PATH = BASE_DIR / "models" / "blocking_vectorizer.joblib"
 SCHEMA_PATH = BASE_DIR / "models" / "xgboost_schema.json"
 
-if not VECTORIZER_PATH.exists():
-    raise FileNotFoundError(
-        f"Vectorizers not found: {VECTORIZER_PATH}"
-    )
-
-if not SCHEMA_PATH.exists():
-    raise FileNotFoundError(
-        f"Model schema not found: {SCHEMA_PATH}"
-    )
+for path in [
+    VECTORIZER_PATH,
+    BLOCKING_VECTORIZER_PATH,
+    SCHEMA_PATH
+]:
+    if not path.exists():
+        raise FileNotFoundError(f"Required file not found: {path}")
 
 VECTORIZERS = joblib.load(VECTORIZER_PATH)
+BLOCKING_VECTORIZER = joblib.load(BLOCKING_VECTORIZER_PATH)
 
 with open(SCHEMA_PATH, "r") as file:
-    import json
     SCHEMA = json.load(file)
 
 FEATURE_COLUMNS = SCHEMA["feature_columns"]
@@ -64,7 +64,6 @@ def clean_text(value):
 
 # --------------------------------------------------
 # 3. TOKEN AND JACCARD SIMILARITY
-# Same logic as feature_engineering.py
 # --------------------------------------------------
 
 def token_set(text):
@@ -97,11 +96,7 @@ def get_price(value):
     if value is None or pd.isna(value):
         return np.nan
 
-    price_text = re.sub(
-        r"[^\d.\-]",
-        "",
-        str(value)
-    )
+    price_text = re.sub(r"[^\d.-]", "", str(value))
 
     try:
         return float(price_text)
@@ -127,7 +122,50 @@ def calculate_tfidf_similarity(text1, text2, vectorizer):
 
 
 # --------------------------------------------------
-# 6. BUILD FEATURES FOR TWO PRODUCTS
+# 6. BLOCKING SIMILARITY
+# Use the exact saved blocking vectorizer
+# --------------------------------------------------
+
+def calculate_blocking_similarity(
+    name_a,
+    desc_a,
+    manufacturer_a,
+    name_b,
+    desc_b,
+    manufacturer_b
+):
+
+    # Match the text composition used during candidate generation.
+    product_text_a = " ".join([
+        name_a,
+        desc_a,
+        manufacturer_a
+    ]).strip()
+
+    product_text_b = " ".join([
+        name_b,
+        desc_b,
+        manufacturer_b
+    ]).strip()
+
+    if not product_text_a:
+        product_text_a = "unknownproduct"
+
+    if not product_text_b:
+        product_text_b = "unknownproduct"
+
+    vectors = BLOCKING_VECTORIZER.transform([
+        product_text_a,
+        product_text_b
+    ])
+
+    similarity = vectors[0].multiply(vectors[1]).sum()
+
+    return float(similarity)
+
+
+# --------------------------------------------------
+# 7. BUILD FEATURES FOR TWO PRODUCTS
 # --------------------------------------------------
 
 def build_features(product_a, product_b):
@@ -139,6 +177,8 @@ def build_features(product_a, product_b):
     desc_a = clean_text(product_a.get("description"))
     desc_b = clean_text(product_b.get("description"))
 
+    # Optional manufacturer values are retained only
+    # for the blocking similarity calculation.
     manufacturer_a = clean_text(
         product_a.get("manufacturer")
     )
@@ -147,7 +187,10 @@ def build_features(product_a, product_b):
         product_b.get("manufacturer")
     )
 
-    # Name similarities.
+    # ----------------------------------
+    # 1. NAME SIMILARITY
+    # ----------------------------------
+
     name_char_similarity = (
         fuzz.ratio(name_a, name_b) / 100.0
     )
@@ -160,7 +203,10 @@ def build_features(product_a, product_b):
         name_a, name_b
     )
 
-    # Description similarities.
+    # ----------------------------------
+    # 2. DESCRIPTION SIMILARITY
+    # ----------------------------------
+
     description_similarity = (
         fuzz.ratio(desc_a, desc_b) / 100.0
     )
@@ -169,7 +215,10 @@ def build_features(product_a, product_b):
         desc_a, desc_b
     )
 
-    # TF-IDF similarities.
+    # ----------------------------------
+    # 3. TF-IDF SIMILARITY
+    # ----------------------------------
+
     name_tfidf_similarity = calculate_tfidf_similarity(
         name_a,
         name_b,
@@ -182,25 +231,10 @@ def build_features(product_a, product_b):
         VECTORIZERS["description"]
     )
 
-    # Manufacturer comparison.
-    manufacturer_a_present = bool(manufacturer_a)
-    manufacturer_b_present = bool(manufacturer_b)
+    # ----------------------------------
+    # 4. PRICE COMPARISON
+    # ----------------------------------
 
-    manufacturer_both_present = (
-        manufacturer_a_present and manufacturer_b_present
-    )
-
-    manufacturer_exact_match = int(
-        manufacturer_both_present
-        and manufacturer_a == manufacturer_b
-    )
-
-    manufacturer_conflict = int(
-        manufacturer_both_present
-        and manufacturer_a != manufacturer_b
-    )
-
-    # Price comparison.
     price_a = get_price(product_a.get("price"))
     price_b = get_price(product_b.get("price"))
 
@@ -214,15 +248,31 @@ def build_features(product_a, product_b):
         price_difference = abs(price_a - price_b)
 
         price_relative_difference = (
-            price_difference
-            / max(abs(price_a), abs(price_b), 1e-8)
+            price_difference /
+            max(abs(price_a), abs(price_b), 1e-8)
         )
 
     else:
         price_difference = np.nan
         price_relative_difference = np.nan
 
-    # Build the exact 19 training features.
+    # ----------------------------------
+    # 5. BLOCKING SIMILARITY
+    # ----------------------------------
+
+    blocking_similarity = calculate_blocking_similarity(
+        name_a,
+        desc_a,
+        manufacturer_a,
+        name_b,
+        desc_b,
+        manufacturer_b
+    )
+
+    # ----------------------------------
+    # 6. FINAL 15 FEATURES
+    # ----------------------------------
+
     features = {
 
         "name_char_similarity": name_char_similarity,
@@ -238,14 +288,6 @@ def build_features(product_a, product_b):
         "description_jaccard_similarity": description_jaccard,
 
         "description_tfidf_similarity": description_tfidf_similarity,
-
-        "manufacturer_exact_match": manufacturer_exact_match,
-
-        "manufacturer_conflict": manufacturer_conflict,
-
-        "manufacturer_both_present": int(
-            manufacturer_both_present
-        ),
 
         "price_difference": price_difference,
 
@@ -269,15 +311,10 @@ def build_features(product_a, product_b):
             not desc_a or not desc_b
         ),
 
-        "manufacturer_missing_either": int(
-            not manufacturer_a or not manufacturer_b
-        ),
-
-        # Raw product requests do not yet use blocking.
-        "blocking_similarity": 0.0
+        "blocking_similarity": blocking_similarity
     }
 
-    # Enforce the exact order used during model training.
+    # Enforce exact training feature order.
     feature_df = pd.DataFrame(
         [[features[column] for column in FEATURE_COLUMNS]],
         columns=FEATURE_COLUMNS

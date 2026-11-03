@@ -1,0 +1,28 @@
+{
+    "model": "XGBoost",
+    "test_records": 3240,
+    "threshold": 0.8895065188407898,
+    "lower_threshold": 0.7395065188407898,
+    "classification_metrics": {
+        "accuracy": 0.979320987654321,
+        "precision": 0.831081081081081,
+        "recall": 0.7454545454545455,
+        "f1_score": 0.7859424920127795
+    },
+    "confusion_matrix": {
+        "true_negatives": 3050,
+        "false_positives": 25,
+        "false_negatives": 42,
+        "true_positives": 123
+    },
+    "decision_policy": {
+        "auto_match_count": 148,
+        "auto_non_match_count": 3059,
+        "human_review_count": 33,
+        "automatic_coverage": 0.9898148148148148,
+        "human_review_rate": 0.010185185185185186,
+        "automatic_accuracy": 0.9834736513875897,
+        "auto_match_precision": 0.831081081081081,
+        "auto_non_match_accuracy": 0.9908466819221968
+    }
+}

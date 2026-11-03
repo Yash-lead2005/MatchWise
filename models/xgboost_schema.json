@@ -13,9 +13,6 @@
         "description_similarity",
         "description_jaccard_similarity",
         "description_tfidf_similarity",
-        "manufacturer_exact_match",
-        "manufacturer_conflict",
-        "manufacturer_both_present",
         "price_difference",
         "price_relative_difference",
         "price_both_present",
@@ -23,10 +20,9 @@
         "name_token_count_difference",
         "name_missing_either",
         "description_missing_either",
-        "manufacturer_missing_either",
         "blocking_similarity"
     ],
-    "threshold": 0.8895065188407898,
+    "threshold": 0.8860219120979309,
     "scale_pos_weight": 18.713541666666668,
     "random_state": 42
 }

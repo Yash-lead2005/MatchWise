@@ -1,0 +1,28 @@
+{
+    "dataset": "test",
+    "total_pairs": 3240,
+    "thresholds": {
+        "auto_match": 0.9975168704986572,
+        "auto_non_match": 0.9133440449333191
+    },
+    "classification_metrics": {
+        "precision": 0.831081081081081,
+        "recall": 0.7454545454545455,
+        "f1_score": 0.7859424920127795
+    },
+    "confusion_matrix": {
+        "true_negatives": 3050,
+        "false_positives": 25,
+        "false_negatives": 42,
+        "true_positives": 123
+    },
+    "decision_policy": {
+        "auto_match_count": 34,
+        "auto_non_match_count": 3100,
+        "human_review_count": 106,
+        "automatic_coverage": 0.967283950617284,
+        "auto_match_precision": 1.0,
+        "auto_non_match_accuracy": 0.9858064516129033,
+        "automatic_accuracy": 0.9859604339502234
+    }
+}

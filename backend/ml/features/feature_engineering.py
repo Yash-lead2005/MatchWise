@@ -196,62 +196,51 @@ def calculate_pair_features(
     a = abt_lookup[abt_id]
     b = buy_lookup[buy_id]
 
-    # Extract cleaned text.
+    # Extract cleaned product text.
     name_a = get_text(a, "name_clean")
     name_b = get_text(b, "name_clean")
 
     desc_a = get_text(a, "description_clean")
     desc_b = get_text(b, "description_clean")
 
-    manufacturer_a = get_text(a, "manufacturer_clean")
-    manufacturer_b = get_text(b, "manufacturer_clean")
+    # ----------------------------------
+    # 1. NAME SIMILARITY
+    # ----------------------------------
 
-    # Name similarity.
-    name_char_similarity = fuzz.ratio(
-        name_a, name_b
-    ) / 100.0
+    name_char_similarity = (
+        fuzz.ratio(name_a, name_b) / 100.0
+    )
 
-    name_token_similarity = fuzz.token_sort_ratio(
-        name_a, name_b
-    ) / 100.0
+    name_token_similarity = (
+        fuzz.token_sort_ratio(name_a, name_b) / 100.0
+    )
 
     name_jaccard = jaccard_similarity(
         name_a, name_b
     )
 
-    # Description similarity.
-    description_similarity = fuzz.ratio(
-        desc_a, desc_b
-    ) / 100.0
+    # ----------------------------------
+    # 2. DESCRIPTION SIMILARITY
+    # ----------------------------------
+
+    description_similarity = (
+        fuzz.ratio(desc_a, desc_b) / 100.0
+    )
 
     description_jaccard = jaccard_similarity(
         desc_a, desc_b
     )
 
-    # Manufacturer comparison.
-    manufacturer_a_present = bool(manufacturer_a)
-    manufacturer_b_present = bool(manufacturer_b)
+    # ----------------------------------
+    # 3. PRICE COMPARISON
+    # ----------------------------------
 
-    manufacturer_both_present = (
-        manufacturer_a_present and manufacturer_b_present
-    )
-
-    manufacturer_exact_match = int(
-        manufacturer_both_present
-        and manufacturer_a == manufacturer_b
-    )
-
-    manufacturer_conflict = int(
-        manufacturer_both_present
-        and manufacturer_a != manufacturer_b
-    )
-
-    # Price comparison.
     price_a = get_price(a)
     price_b = get_price(b)
 
     price_both_present = (
-        not pd.isna(price_a) and not pd.isna(price_b)
+        not pd.isna(price_a)
+        and not pd.isna(price_b)
     )
 
     if price_both_present:
@@ -267,46 +256,59 @@ def calculate_pair_features(
         price_difference = np.nan
         price_relative_difference = np.nan
 
-    # TF-IDF cosine similarity using already-fitted vectorizers.
+    # ----------------------------------
+    # 4. TF-IDF COSINE SIMILARITY
+    # ----------------------------------
+
     a_position = abt_positions[abt_id]
     b_position = buy_positions[buy_id]
 
     if abt_name_vectors is not None:
+
         name_tfidf_similarity = float(
             abt_name_vectors[a_position]
             .multiply(buy_name_vectors[b_position])
             .sum()
         )
+
     else:
         name_tfidf_similarity = 0.0
 
     if abt_desc_vectors is not None:
+
         description_tfidf_similarity = float(
             abt_desc_vectors[a_position]
             .multiply(buy_desc_vectors[b_position])
             .sum()
         )
+
     else:
         description_tfidf_similarity = 0.0
 
+    # ----------------------------------
+    # 5. FINAL 15 FEATURES
+    # ----------------------------------
+
     return {
+
         "name_char_similarity": name_char_similarity,
+
         "name_token_similarity": name_token_similarity,
+
         "name_jaccard_similarity": name_jaccard,
+
         "name_tfidf_similarity": name_tfidf_similarity,
 
         "description_similarity": description_similarity,
+
         "description_jaccard_similarity": description_jaccard,
+
         "description_tfidf_similarity": description_tfidf_similarity,
 
-        "manufacturer_exact_match": manufacturer_exact_match,
-        "manufacturer_conflict": manufacturer_conflict,
-        "manufacturer_both_present": int(
-            manufacturer_both_present
-        ),
-
         "price_difference": price_difference,
+
         "price_relative_difference": price_relative_difference,
+
         "price_both_present": int(price_both_present),
 
         "name_length_difference": abs(
@@ -325,15 +327,10 @@ def calculate_pair_features(
             not desc_a or not desc_b
         ),
 
-        "manufacturer_missing_either": int(
-            not manufacturer_a or not manufacturer_b
-        ),
-
         "blocking_similarity": float(
             pair.get("blocking_similarity", 0.0)
         )
     }
-
 
 # --------------------------------------------------
 # BUILD FEATURE DATASET FOR ONE SPLIT
